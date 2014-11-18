@@ -42,8 +42,11 @@ namespace DatabaseUtility {
                                                       .Cast<ForeignKey>()
                                                       .SelectMany(fk => fk.Script(new ScriptingOptions { ScriptDrops = true }).Cast<string>()));
 
-            _fileWriter.WriteFile(addForeignKeyFileName, new[] { addForeignKeys });
-            _fileWriter.WriteFile(dropForeignKeyFileName, new[] { dropForeignKeys });
+            if (table.ForeignKeys.Cast<ForeignKey>().Any())
+            {
+                _fileWriter.WriteFile(addForeignKeyFileName, new[] { addForeignKeys });
+                _fileWriter.WriteFile(dropForeignKeyFileName, new[] { dropForeignKeys });
+            }
         }
 
         public void ScriptObject(View view, Options options) {
