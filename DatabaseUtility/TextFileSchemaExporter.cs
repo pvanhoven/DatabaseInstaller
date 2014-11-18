@@ -28,6 +28,12 @@ namespace DatabaseUtility {
                 }
 
                 foreach (Table table in database.Tables.Cast<Table>().Where(t => !t.IsSystemObject)) {
+                    if (table.Name.StartsWith("__"))
+                    {
+                        Console.WriteLine("Skipping table: " + table.Name);
+                        continue;
+                    }
+
                     Console.WriteLine("Scripting table: '{0}'", table.Name);
 
                     scripter.ScriptObject(table, options);
